@@ -1,25 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import {
+  getPokemonSpriteUrl,
+  getPokemonDescription,
+  getPokemonList,
+} from "./api/utils";
+import Card from "./Components/card";
 
-function App() {
+// async function logData() {
+//   const list = await getPokemonList();
+//   console.log(list);
+
+//   const pokemon = await getPokemonDescription();
+//   console.log(pokemon);
+// }
+
+// logData();
+
+export default function App() {
+  const [pokemonList, setPokemonList] = useState([]);
+  const [pokemonDescription, setPokemonDescription] = useState(
+    getPokemonDescription
+  );
+  const [pokemonSpriteUrl, setPokemonSpriteUrl] = useState(getPokemonSpriteUrl);
+
+  useEffect(() => {
+    async function getData() {
+      const apiData = await getPokemonList();
+
+      setPokemonList(apiData);
+    }
+
+    getData();
+  }, []);
+
+  const pokemonNames = pokemonList.map((pokemon, idx) => {
+    return (
+      <option key={idx} value={idx + 1}>
+        {pokemon.name}
+      </option>
+    );
+  });
+
+  function setPokemonInfo(e) {
+    setPokemonDescription(getPokemonDescription(e));
+    setPokemonSpriteUrl(getPokemonSpriteUrl(e));
+    console.log([pokemonDescription, pokemonSpriteUrl]);
+    return [pokemonDescription, pokemonSpriteUrl];
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <select
+        id="pokemonSelect"
+        onChange={(e) => setPokemonInfo(e.target.value)}
+      >
+        {pokemonNames}
+      </select>
+      <Card />
     </div>
   );
 }
-
-export default App;
