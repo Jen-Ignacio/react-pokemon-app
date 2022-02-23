@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;700&display=swap");
+
+/* MAIN COLORS */
+
+$purple: #a4aeeb;
+$purpleShadow: #6c76b8;
+$grey: #e2e2dc;
+$mutedBlue: #99cfeb;
+$mustard: #ebd281;
+$mutedMint: #8debd7;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+  font-family: "Nunito", sans-serif;
+}
+
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: $purple;
+}
+
+img {
+  max-width: 100%;
+}
+
+.app {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  gap: 5px 5px;
+  width: 100%;
+}
+.header {
+  grid-area: 1 / 3 / 3 / 11;
+  margin-bottom: 5%;
+}
+.main {
+  grid-area: 3 / 3 / 13 / 11;
+}
+.main-select {
+  grid-area: 3 / 3 / 5 / 11;
+}
+.main-card {
+  grid-area: 5 / 3 / 13 / 11;
+}
+
+.select {
+  font-family: "Nunito";
+  font-size: 2em;
+  font-weight: 600;
+  border-radius: 15px;
+  padding: 10px;
+  color: $mutedBlue;
+}
+
+.img {
+  border-radius: 50%;
+  border: 5px solid $mustard;
+  background-color: $grey;
+  margin: 5%;
+  padding: 15px;
+}
+
+.div__card {
+  margin: auto;
+  margin-top: 5%;
+  max-width: 60%;
+  background-color: $mutedBlue;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 0 15px $purpleShadow;
+
+  .p--description {
+    font-size: 1.25em;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .header {
+    margin-top: 5%;
+  }
+
+  .div__card {
+    max-width: 30vw;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .div__card {
+    max-width: 20vw;
+  }
+}

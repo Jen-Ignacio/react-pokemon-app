@@ -1,10 +1,14 @@
 import React from "react";
-import { getPokemonSpriteUrl, getPokemonDescription } from "../api/utils";
 
-export default function Card() {
+export default function Card({ pokeInfo }) {
   return (
-    <div className="card">
-      <img src="" alt="pokemon-graphic" />
+    <div className="div__card main-card">
+      <img
+        className="img img--pokemon"
+        alt="pokemon-graphic"
+        src={pokeInfo.pokemonSpriteUrl}
+      />
+      <p className="p p--description">{pokeInfo.pokemonDescription}</p>
     </div>
   );
 }

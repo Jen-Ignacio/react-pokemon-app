@@ -5,13 +5,6 @@ export async function getPokemonList() {
   return data.results;
 }
 
-export async function getPokemonDescription(idx) {
-  const pokemon = await fetch(
-    `https://pokeapi.co/api/v2/pokemon-species/${idx}/`
-  ).then((res) => res.json());
-  return pokemon.flavor_text_entries[0].flavor_text.replace(/[\n\f]/g, " ");
-}
-
 export function getPokemonSpriteUrl(idx) {
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/${idx}.png`;
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${idx}.png`;
 }

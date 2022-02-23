@@ -1,27 +1,25 @@
-import React, { useEffect, useState } from "react";
-import {
-  getPokemonSpriteUrl,
-  getPokemonDescription,
-  getPokemonList,
-} from "./api/utils";
+import React, { useCallback, useEffect, useState } from "react";
+import { getPokemonSpriteUrl, getPokemonList } from "./api/utils";
+
+import Header from "./Components/header";
+import Select from "./Components/select";
 import Card from "./Components/card";
 
-// async function logData() {
-//   const list = await getPokemonList();
-//   console.log(list);
-
-//   const pokemon = await getPokemonDescription();
-//   console.log(pokemon);
-// }
-
-// logData();
-
 export default function App() {
-  const [pokemonList, setPokemonList] = useState([]);
-  const [pokemonDescription, setPokemonDescription] = useState(
-    getPokemonDescription
-  );
-  const [pokemonSpriteUrl, setPokemonSpriteUrl] = useState(getPokemonSpriteUrl);
+  const [pokemonList, setPokemonList] = useState([0]);
+  const [pokemonSpriteUrl, setPokemonSpriteUrl] = useState(null);
+  const [pokemonDescription, setPokemonDescription] = useState(null);
+
+  const setPokeInfo = useCallback(async (e) => {
+    setPokemonSpriteUrl(getPokemonSpriteUrl(e));
+
+    const pokemon = await fetch(
+      `https://pokeapi.co/api/v2/pokemon-species/${e}/`
+    ).then((res) => res.json());
+    return setPokemonDescription(
+      pokemon.flavor_text_entries[0].flavor_text.replace(/[\n\f]/g, " ")
+    );
+  }, []);
 
   useEffect(() => {
     async function getData() {
@@ -29,34 +27,27 @@ export default function App() {
 
       setPokemonList(apiData);
     }
-
     getData();
   }, []);
 
-  const pokemonNames = pokemonList.map((pokemon, idx) => {
-    return (
-      <option key={idx} value={idx + 1}>
-        {pokemon.name}
-      </option>
-    );
-  });
-
-  function setPokemonInfo(e) {
-    setPokemonDescription(getPokemonDescription(e));
-    setPokemonSpriteUrl(getPokemonSpriteUrl(e));
-    console.log([pokemonDescription, pokemonSpriteUrl]);
-    return [pokemonDescription, pokemonSpriteUrl];
-  }
-
   return (
     <div className="app">
-      <select
-        id="pokemonSelect"
-        onChange={(e) => setPokemonInfo(e.target.value)}
-      >
-        {pokemonNames}
-      </select>
-      <Card />
+      <Header />
+      <main className="main">
+        <select
+          id="pokemonSelect"
+          className="select main-select"
+          onChange={(e) => setPokeInfo(e.target.value)}
+        >
+          <option defaultChecked>Select a pokemon...</option>
+          <Select pokeList={pokemonList} />
+        </select>
+        {pokemonDescription === null ? (
+          <></>
+        ) : (
+          <Card pokeInfo={{ pokemonDescription, pokemonSpriteUrl }} />
+        )}
+      </main>
     </div>
   );
 }
